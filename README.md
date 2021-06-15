@@ -1,6 +1,6 @@
 # Chakra UI File Picker
 
-Since there is no default file picker for Chakra UI, I've developed my own for usage in 
+Since there is no default file picker for [Chakra-UI    ](https://chakra-ui.com/) at the moment, I've developed my own for usage in 
 one of my personal projects.
 
 At the moment it only provides you with a list of
