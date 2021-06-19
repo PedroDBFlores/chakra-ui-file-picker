@@ -3,11 +3,14 @@ name: Components test
 on:
   push:
     branches: [ main ]
+    paths: 
+      - "src/**"
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
 
