@@ -1,3 +1,5 @@
+![Components test](https://github.com/PedroDBFlores/Cookbook/workflows/Components%20test/badge.svg?branch=master)
+
 # Chakra UI File Picker
 
 Since there is no default file picker for [Chakra-UI](https://chakra-ui.com/), I've developed my own for
