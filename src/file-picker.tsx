@@ -4,14 +4,24 @@ import {Button, InputRightAddon} from "@chakra-ui/react";
 
 interface FilePickerProps {
     placeholder: string
-    clearButtonLabel?: string
-    multipleFiles?: boolean
+    clearButtonLabel?: string | undefined
+    multipleFiles?: boolean | undefined
+    accept?: string | undefined
     onFileChange: (fileList: Array<File>) => void
 }
 
 interface FilePickerState {
     files: FileList | null
     fileName: string
+}
+
+const validate = (file: File, accept: string | undefined) => {
+    if (accept) {
+        const parts = accept.split(",")
+        return parts.findIndex(s => s === file.type) != -1;
+
+    }
+    return true;
 }
 
 class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
@@ -30,7 +40,10 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
             const fileArray = new Array<File>()
             if (this.state.files) {
                 for (let i = 0; i < this.state.files.length; i++) {
-                    fileArray.push(this.state.files.item(i) as File)
+                    const file = this.state.files.item(i) as File
+                    if (validate(file, this.props.accept)) {
+                        fileArray.push(file)
+                    }
                 }
             }
             this.setState({...this.state, fileName: fileArray.map(f => f.name).join(" & ")})
@@ -56,6 +69,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                 <input
                     type="file"
                     ref={this.inputRef}
+                    accept={this.props.accept}
                     style={{display: "none"}}
                     multiple={this.props.multipleFiles}
                     onChange={this.handleOnFileChange}
