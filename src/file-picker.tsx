@@ -4,10 +4,11 @@ import {Button, InputRightAddon} from "@chakra-ui/react";
 
 interface FilePickerProps {
     placeholder: string
+    onFileChange: (fileList: Array<File>) => void
     clearButtonLabel?: string | undefined
+    hideClearButton?: boolean | undefined
     multipleFiles?: boolean | undefined
     accept?: string | undefined
-    onFileChange: (fileList: Array<File>) => void
 }
 
 interface FilePickerState {
@@ -15,16 +16,14 @@ interface FilePickerState {
     fileName: string
 }
 
-const validate = (file: File, accept: string | undefined) => {
-    if (accept) {
-        const parts = accept.split(",")
-        return parts.findIndex(s => s === file.type) !== -1;
-
-    }
-    return true;
-}
-
 class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
+    static defaultProps = {
+        clearButtonLabel: "Clear",
+        multipleFiles: false,
+        accept: undefined,
+        hideClearButton: false
+    }
+
     private inputRef = React.createRef<HTMLInputElement>();
 
     constructor(props: FilePickerProps) {
@@ -41,9 +40,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
             if (this.state.files) {
                 for (let i = 0; i < this.state.files.length; i++) {
                     const file = this.state.files.item(i) as File
-                    if (validate(file, this.props.accept)) {
-                        fileArray.push(file)
-                    }
+                    fileArray.push(file)
                 }
             }
             this.setState({...this.state, fileName: fileArray.map(f => f.name).join(" & ")})
@@ -78,9 +75,12 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                     readOnly={true}
                     value={this.state.fileName}
                 />
-                <InputRightAddon>
-                    <Button onClick={this.handleOnClearClick}>{this.props.clearButtonLabel ?? "Clear"}</Button>
-                </InputRightAddon>
+                {
+                    !this.props.hideClearButton &&
+                    <InputRightAddon>
+                        <Button onClick={this.handleOnClearClick}>{this.props.clearButtonLabel ?? "Clear"}</Button>
+                    </InputRightAddon>
+                }
             </InputGroup>
         )
     }

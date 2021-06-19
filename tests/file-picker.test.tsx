@@ -25,10 +25,21 @@ describe("File picker", () => {
         render(<FilePicker
             onFileChange={jest.fn()}
             placeholder="the best placeholder"
-            clearButtonLabel="the best label"
+            clearButtonLabel="the best clear"
         />)
 
-        expect(screen.getByText(/^the best label$/i)).toBeInTheDocument()
+        expect(screen.getByText(/^the best clear$/i)).toBeInTheDocument()
+    })
+
+    it("allows to hide the clear button", () => {
+        render(<FilePicker
+            onFileChange={jest.fn()}
+            placeholder="the best placeholder"
+            clearButtonLabel="the best clear"
+            hideClearButton={true}
+        />)
+
+        expect(screen.queryByText(/^the best clear/i)).not.toBeInTheDocument()
     })
 
     it("allows for accepted file types", () => {
@@ -151,22 +162,5 @@ describe("File picker", () => {
 
         expect(onFileChangeMock).toHaveBeenLastCalledWith([])
         expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")
-    })
-
-    describe("File extensions", () => {
-        it("unsets the file if a not-allowed extension is provided", () => {
-            const onFileChangeMock = jest.fn()
-            render(<FilePicker
-                onFileChange={onFileChangeMock}
-                placeholder="holder"
-                accept="image/jpeg"
-            />)
-
-            userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
-            expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(jpgFile.name)
-
-            userEvent.upload(screen.getByTestId(/^holder$/i), txtFile)
-            expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")
-        })
     })
 })

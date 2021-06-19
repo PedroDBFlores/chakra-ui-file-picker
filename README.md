@@ -19,6 +19,8 @@ usage in one of my personal projects.
     clearButtonLabel="label"
     multipleFiles={true}
     accept="application/json"
+    hideClearButton={false}
+    ref={myRef}
 />
 ````
 
@@ -31,6 +33,11 @@ usage in one of my personal projects.
 `multipleFiles` - (boolean, optional) Sets if the input can allow for one of many files at a time. Default is false
 
 `accept` -  (string, optional) Allows to filter the files by type/extension. Default is no filter
+
+`hideClearButton` -  (boolean, optional) Hides or shows the clear button. Default is false
+
+`ref` - (React.RefObject<FilePicker>, optional) - Provides a reference to the `FilePicker`, where you are able to
+reset the file picker programmatically
 
 ## TODO
 
