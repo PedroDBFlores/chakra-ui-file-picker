@@ -1,4 +1,4 @@
-![Components test](https://github.com/PedroDBFlores/Cookbook/workflows/Components%20test/badge.svg?branch=master)
+![Components test](https://github.com/PedroDBFlores/chakra-ui-file-picker/workflows/Components%20test/badge.svg?branch=master)
 
 # Chakra UI File Picker
 
