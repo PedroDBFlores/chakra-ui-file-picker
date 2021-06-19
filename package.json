@@ -19,15 +19,13 @@
   ],
   "author": "Pedro Flores",
   "license": "MIT",
-  "peerDependencies": {
+  "devDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "@chakra-ui/react": "^1.6.3",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "framer-motion": "^4.1.17"
-  },
-  "devDependencies": {
+    "framer-motion": "^4.1.17",
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",

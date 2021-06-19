@@ -34,7 +34,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
         }
     }
 
-    componentDidUpdate(_: FilePickerProps, prevState: FilePickerState) {
+    componentDidUpdate(_: FilePickerProps, prevState: FilePickerState): void {
         if (prevState.files !== this.state.files) {
             const fileArray = new Array<File>()
             if (this.state.files) {
@@ -48,11 +48,9 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
         }
     }
 
-    public reset() {
-        this.handleOnClearClick()
-    }
+    public reset = (): void => this.handleOnClearClick()
 
-    render = () => {
+    render = (): JSX.Element => {
         return (
             <InputGroup>
                 <input
