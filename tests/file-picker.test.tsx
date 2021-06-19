@@ -42,6 +42,17 @@ describe("File picker", () => {
         expect(screen.getByTestId(/^the best placeholder$/i)).toHaveAttribute("accept", "application/jason")
     })
 
+    it("allows for being labeled", () => {
+        render(<FilePicker
+            onFileChange={jest.fn()}
+            placeholder="the best placeholder"
+            clearButtonLabel="the best label"
+            accept="application/jason"
+        />)
+
+        expect(screen.getByTestId(/^the best placeholder$/i)).toHaveAttribute("accept", "application/jason")
+    })
+
     describe("Single file", () => {
         it("accepts a file", () => {
             const onFileChangeMock = jest.fn()

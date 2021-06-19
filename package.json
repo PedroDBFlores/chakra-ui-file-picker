@@ -7,9 +7,10 @@
   "main": "lib/file-picker.js",
   "scripts": {
     "build": "npx rimraf ./lib && tsc",
-    "pretest": "npm run lint",
     "test": "jest",
-    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix"
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
+    "pretest": "npm run lint",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "chakra-ui",
