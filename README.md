@@ -3,7 +3,7 @@
 Since there is no default file picker for [Chakra-UI](https://chakra-ui.com/), I've developed my own for
 usage in one of my personal projects.
 
-##Allows to:
+## Allows to:
 
 - Retrieve the files from a callback
 - Filter the files by file type/extension
