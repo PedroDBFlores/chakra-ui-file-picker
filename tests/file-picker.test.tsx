@@ -65,7 +65,7 @@ describe("File picker", () => {
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name}`)
         })
 
-        it("clears the selected file", () => {
+        it("clears the selected file and allows to pick again", () => {
             const onFileChangeMock = jest.fn()
             render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder"/>)
 
@@ -77,8 +77,13 @@ describe("File picker", () => {
 
             userEvent.click(screen.getByText(/^clear$/i))
 
-            expect(onFileChangeMock).toHaveBeenLastCalledWith([])
+            expect(onFileChangeMock).toHaveBeenNthCalledWith(2, [])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")
+
+            userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
+
+            expect(onFileChangeMock).toHaveBeenNthCalledWith(3, [jpgFile])
+            expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name}`)
         })
     })
 
@@ -98,7 +103,7 @@ describe("File picker", () => {
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
         })
 
-        it("clears the selected file", () => {
+        it("clears the selected file and allows to pick again", () => {
             const onFileChangeMock = jest.fn()
             render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" multipleFiles={true}/>)
 
@@ -110,8 +115,13 @@ describe("File picker", () => {
 
             userEvent.click(screen.getByText(/^clear$/i))
 
-            expect(onFileChangeMock).toHaveBeenLastCalledWith([])
+            expect(onFileChangeMock).toHaveBeenNthCalledWith(2, [])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")
+
+            userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
+
+            expect(onFileChangeMock).toHaveBeenNthCalledWith(3, [jpgFile, txtFile])
+            expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
         })
     })
 

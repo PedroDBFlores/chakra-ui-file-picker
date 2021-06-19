@@ -14,9 +14,10 @@ declare class FilePicker extends React.Component<FilePickerProps, FilePickerStat
     private inputRef;
     constructor(props: FilePickerProps);
     componentDidUpdate(_: FilePickerProps, prevState: FilePickerState): void;
-    private handleOnFileChange;
-    private handleOnClearClick;
     reset(): void;
     render: () => JSX.Element;
+    private handleOnFileChange;
+    private handleOnClearClick;
+    private clearInnerInput;
 }
 export default FilePicker;

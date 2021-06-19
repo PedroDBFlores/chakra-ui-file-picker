@@ -18,7 +18,7 @@ interface FilePickerState {
 const validate = (file: File, accept: string | undefined) => {
     if (accept) {
         const parts = accept.split(",")
-        return parts.findIndex(s => s === file.type) != -1;
+        return parts.findIndex(s => s === file.type) !== -1;
 
     }
     return true;
@@ -36,7 +36,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
     }
 
     componentDidUpdate(_: FilePickerProps, prevState: FilePickerState) {
-        if (prevState.files != this.state.files) {
+        if (prevState.files !== this.state.files) {
             const fileArray = new Array<File>()
             if (this.state.files) {
                 for (let i = 0; i < this.state.files.length; i++) {
@@ -49,14 +49,6 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
             this.setState({...this.state, fileName: fileArray.map(f => f.name).join(" & ")})
             this.props.onFileChange(fileArray)
         }
-    }
-
-    private handleOnFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({...this.state, files: ev.target.files})
-    }
-
-    private handleOnClearClick = () => {
-        this.setState({...this.state, files: null})
     }
 
     public reset() {
@@ -78,6 +70,9 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                 <Input
                     placeholder={this.props.placeholder}
                     onClick={() => {
+                        if (this.inputRef?.current) {
+                            this.inputRef.current.value = "";
+                        }
                         this.inputRef?.current?.click()
                     }}
                     readOnly={true}
@@ -88,6 +83,23 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                 </InputRightAddon>
             </InputGroup>
         )
+    }
+
+    private handleOnFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({...this.state, files: ev.target.files})
+        this.clearInnerInput();
+    }
+
+
+    private handleOnClearClick = () => {
+        this.setState({...this.state, files: null})
+        this.clearInnerInput();
+    }
+
+    private clearInnerInput() {
+        if (this.inputRef?.current) {
+            this.inputRef.current.files = null;
+        }
     }
 }
 
