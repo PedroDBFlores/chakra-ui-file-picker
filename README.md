@@ -1,12 +1,16 @@
 # Chakra UI File Picker
 
-Since there is no default file picker for [Chakra-UI    ](https://chakra-ui.com/) at the moment, I've developed my own for usage in 
-one of my personal projects.
+Since there is no default file picker for [Chakra-UI](https://chakra-ui.com/), I've developed my own for
+usage in one of my personal projects.
 
-At the moment it only provides you with a list of
-files that were picked by the user, no filtering of any kind.
+##Allows to:
+
+- Retrieve the files from a callback
+- Filter the files by file type/extension
 
 ## Usage
+
+![Demonstration](https://raw.githubusercontent.com/PedroDBFlores/chakra-ui-file-picker/main/readme/small-demo.gif "Demonstration")
 
 ````
 <FilePicker
@@ -14,16 +18,20 @@ files that were picked by the user, no filtering of any kind.
     placeholder="placeholder"
     clearButtonLabel="label"
     multipleFiles={true}
+    accept="application/json"
 />
 ````
 
+`placeholder` - (string) Sets the placeholder on the input field
+
 `onFileChange` - is triggered every time that the file list changes
 
-`placeholder` - Sets the placeholder on the input field
+`clearButtonLabel` - (string, optional) Sets the label that will be shown on the clear button. Default is 'Clear'
 
-`clearButtonLabel` - Sets the label that will be shown on the clear button
+`multipleFiles` - (boolean, optional) Sets if the input can allow for one of many files at a time. Default is false
 
-`multipleFiles` - (boolean) Sets if the input can allow for one of many files at a time 
+`accept` -  (string, optional) Allows to filter the files by type/extension. Default is no filter
 
 ## TODO
-- Accept files based on extension only
+
+- To be defined
