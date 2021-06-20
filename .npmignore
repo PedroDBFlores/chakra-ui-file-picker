@@ -1,4 +1,5 @@
-.vscode
-.idea
-tests
+.vscode/
+.idea/
+.github/
+tests/
 readme/small-demo.gif

@@ -38,8 +38,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
         if (prevState.files !== this.state.files) {
             const fileArray = new Array<File>()
             if (this.state.files) {
-                for (let i = 0; i < this.state.files.length; i++) {
-                    const file = this.state.files.item(i) as File
+                for (const file of this.state.files) {
                     fileArray.push(file)
                 }
             }
@@ -67,8 +66,8 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                     onClick={() => {
                         if (this.inputRef?.current) {
                             this.inputRef.current.value = "";
+                            this.inputRef.current.click()
                         }
-                        this.inputRef?.current?.click()
                     }}
                     readOnly={true}
                     value={this.state.fileName}

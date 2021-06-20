@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "outDir": "./lib",
-      "target": "es5",
+      "target": "es6",
       "module": "commonjs",
       "strict": true,
       "noImplicitAny": true,
@@ -9,6 +9,11 @@
       "strictBindCallApply": true,
       "strictPropertyInitialization": true,
       "strictFunctionTypes": true,
+      "noUnusedParameters": true,
+      "noUnusedLocals": true,
+      "noUncheckedIndexedAccess": false,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
       "removeComments": true,
       "declaration": true,
       "sourceMap": true,
