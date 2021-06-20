@@ -3,3 +3,4 @@
 .github/
 tests/
 readme/small-demo.gif
+jest.config.ts
