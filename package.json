@@ -1,6 +1,6 @@
 {
   "name": "chakra-ui-file-picker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Chakra UI File Picker",
   "readme": "README.md",
   "repository": "https://github.com/PedroDBFlores/chakra-ui-file-picker",
@@ -8,6 +8,7 @@
   "scripts": {
     "build": "npx rimraf ./lib && tsc",
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "pretest": "npm run lint",
     "prepublish": "npm run build"

@@ -10,6 +10,7 @@ my personal projects.
 - Retrieve the files from a callback
 - Filter the files by file type/extension
 - Reset programmatically by using a `ref`
+- Provide styling to the Input and InputGroup
 
 ## Usage
 
@@ -39,7 +40,7 @@ my personal projects.
 
 ## TODO
 
-- You tell me 😉.
+- Maybe have a FormControl base with this component?
 
 ## Contributions
 

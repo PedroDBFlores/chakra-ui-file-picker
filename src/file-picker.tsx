@@ -1,14 +1,16 @@
+import { Input, InputGroup, InputGroupProps } from "@chakra-ui/input";
+import { Button, InputRightAddon } from "@chakra-ui/react";
 import React from "react";
-import {Input, InputGroup} from "@chakra-ui/input";
-import {Button, InputRightAddon} from "@chakra-ui/react";
 
 interface FilePickerProps {
-    placeholder: string
     onFileChange: (fileList: Array<File>) => void
+    placeholder: string,
     clearButtonLabel?: string | undefined
     hideClearButton?: boolean | undefined
     multipleFiles?: boolean | undefined
     accept?: string | undefined
+    inputProps?: InputGroupProps | undefined,
+    inputGroupProps?: InputGroupProps | undefined
 }
 
 interface FilePickerState {
@@ -21,7 +23,9 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
         clearButtonLabel: "Clear",
         multipleFiles: false,
         accept: undefined,
-        hideClearButton: false
+        hideClearButton: false,
+        inputProps: undefined,
+        inputGroupProps: undefined
     }
 
     private inputRef = React.createRef<HTMLInputElement>();
@@ -42,54 +46,21 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                     fileArray.push(file)
                 }
             }
-            this.setState({...this.state, fileName: fileArray.map(f => f.name).join(" & ")})
+            this.setState({ ...this.state, fileName: fileArray.map(f => f.name).join(" & ") })
             this.props.onFileChange(fileArray)
         }
     }
 
     public reset = (): void => this.handleOnClearClick()
 
-    render = (): JSX.Element => {
-        return (
-            <InputGroup>
-                <input
-                    type="file"
-                    ref={this.inputRef}
-                    accept={this.props.accept}
-                    style={{display: "none"}}
-                    multiple={this.props.multipleFiles}
-                    onChange={this.handleOnFileChange}
-                    data-testid={this.props.placeholder}
-                />
-                <Input
-                    placeholder={this.props.placeholder}
-                    onClick={() => {
-                        if (this.inputRef?.current) {
-                            this.inputRef.current.value = "";
-                            this.inputRef.current.click()
-                        }
-                    }}
-                    readOnly={true}
-                    value={this.state.fileName}
-                />
-                {
-                    !this.props.hideClearButton &&
-                    <InputRightAddon>
-                        <Button onClick={this.handleOnClearClick}>{this.props.clearButtonLabel ?? "Clear"}</Button>
-                    </InputRightAddon>
-                }
-            </InputGroup>
-        )
-    }
-
     private handleOnFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({...this.state, files: ev.target.files})
+        this.setState({ ...this.state, files: ev.target.files })
         this.clearInnerInput();
     }
 
 
     private handleOnClearClick = () => {
-        this.setState({...this.state, files: null})
+        this.setState({ ...this.state, files: null })
         this.clearInnerInput();
     }
 
@@ -97,6 +68,57 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
         if (this.inputRef?.current) {
             this.inputRef.current.files = null;
         }
+    }
+
+    private handleOnInputClick = () => {
+        if (this.inputRef?.current) {
+            this.inputRef.current.value = "";
+            this.inputRef.current.click()
+        }
+    }
+
+    render = (): JSX.Element => {
+        const {
+            placeholder,
+            clearButtonLabel,
+            hideClearButton,
+            multipleFiles,
+            accept,
+            inputProps,
+            inputGroupProps
+        } = this.props;
+
+        return (
+            <InputGroup  {...inputGroupProps}>
+                <input
+                    type="file"
+                    ref={this.inputRef}
+                    accept={accept}
+                    style={{ display: "none" }}
+                    multiple={multipleFiles}
+                    onChange={this.handleOnFileChange}
+                    data-testid={inputProps?.placeholder ?? placeholder}
+                />
+                <Input
+                    placeholder={placeholder}
+                    {
+                    ...{
+                        ...inputProps,
+                        readOnly: true,
+                        isReadOnly: true,
+                        value: this.state.fileName,
+                        onClick: this.handleOnInputClick
+                    }
+                    }
+                />
+                {
+                    !hideClearButton &&
+                    <InputRightAddon>
+                        <Button onClick={this.handleOnClearClick}>{clearButtonLabel ?? "Clear"}</Button>
+                    </InputRightAddon>
+                }
+            </InputGroup>
+        )
     }
 }
 

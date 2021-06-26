@@ -7,6 +7,7 @@ const jestConfig: Config.InitialOptions = {
         ...tsjPreset.transform
     },
     roots: [
+        "<rootDir>/src",
         "<rootDir>/tests"
     ],
     testMatch: ["**/*.test.ts", "**/*.test.tsx"],

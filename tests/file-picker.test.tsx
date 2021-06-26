@@ -1,21 +1,21 @@
-import {render, screen} from "@testing-library/react"
-import React, {useRef} from "react"
-import FilePicker from "../src/file-picker"
+import { render, screen } from "@testing-library/react"
+import React, { useRef } from "react"
 import userEvent from "@testing-library/user-event"
-import {Button} from "@chakra-ui/react"
+import FilePicker from "../src/file-picker"
+import { Button, InputGroupProps, InputProps } from "@chakra-ui/react"
 
 describe("File picker", () => {
     const jpgFile = new File(
         ["(T_T)"],
         "file.jpg",
-        {type: "image/jpeg"})
+        { type: "image/jpeg" })
     const txtFile = new File(
         ["(╯°□°）╯︵ ┻━┻"],
         "table_flipping.txt",
-        {type: "application/text"})
+        { type: "application/text" })
 
     it("renders the initial content", () => {
-        render(<FilePicker onFileChange={jest.fn()} placeholder="the best placeholder"/>)
+        render(<FilePicker onFileChange={jest.fn()} placeholder="the best placeholder" />)
 
         expect(screen.getByPlaceholderText(/^the best placeholder$/i)).toBeInTheDocument()
         expect(screen.getByText(/^clear$/i)).toBeInTheDocument()
@@ -64,10 +64,108 @@ describe("File picker", () => {
         expect(screen.getByTestId(/^the best placeholder$/i)).toHaveAttribute("accept", "application/jason")
     })
 
+    it("allows standard Chakra-UI props to the Input", () => {
+        const inputProps: InputProps = {
+            ['aria-autocomplete']: "none"
+        }
+        render(<FilePicker
+            onFileChange={jest.fn()}
+            placeholder="the best placeholder"
+            clearButtonLabel="the best label"
+            accept="application/jason"
+            inputProps={inputProps}
+        />)
+
+        expect(screen.getByPlaceholderText(/^the best placeholder$/i)).toHaveAttribute("aria-autocomplete", "none")
+    })
+
+    it("allows standard Chakra-UI props to the InputGroup", () => {
+        const inputGroupProps: InputGroupProps = {
+            ['aria-autocomplete']: "none"
+        }
+
+        render(<FilePicker
+            onFileChange={jest.fn()}
+            placeholder="the best placeholder"
+            clearButtonLabel="the best label"
+            accept="application/jason"
+            inputGroupProps={inputGroupProps}
+        />)
+
+        expect(screen.getByPlaceholderText(/^the best placeholder$/i).parentElement).toHaveAttribute("aria-autocomplete", "none")
+    })
+
+    describe("Prop spreading", () => {
+        it("disallows changing the Input to read/write", () => {
+            const inputProps: InputProps = {
+                isReadOnly: false,
+            }
+            render(<FilePicker
+                onFileChange={jest.fn()}
+                placeholder="the best placeholder"
+                clearButtonLabel="the best label"
+                accept="application/jason"
+                inputProps={inputProps}
+            />)
+
+            expect(screen.getByPlaceholderText(/^the best placeholder$/i)).toHaveAttribute("readonly", expect.anything())
+        })
+
+        it("allows providing placeholder via input props", () => {
+            const inputProps: InputProps = {
+                placeholder: "I want other placeholder here"
+            }
+            render(<FilePicker
+                onFileChange={jest.fn()}
+                placeholder="the best placeholder"
+                clearButtonLabel="the best label"
+                accept="application/jason"
+                inputProps={inputProps}
+            />)
+
+            expect(screen.queryByPlaceholderText(/^the best placeholder$/i)).not.toBeInTheDocument()
+            expect(screen.getByPlaceholderText(/^I want other placeholder here$/i)).toBeInTheDocument()
+            expect(screen.getByTestId(/^I want other placeholder here$/i)).toBeInTheDocument()
+        })
+
+        it("disallows changing the Input's value", () => {
+            const inputProps: InputProps = {
+                value: "you got tricked"
+            }
+            render(<FilePicker
+                onFileChange={jest.fn()}
+                placeholder="the best placeholder"
+                clearButtonLabel="the best label"
+                accept="application/jason"
+                inputProps={inputProps}
+            />)
+
+            expect(screen.getByPlaceholderText(/^the best placeholder$/i)).toHaveAttribute("value", "")
+        })
+        
+        it("disallows changing the Input's onClick handler", () => {
+            const inputProps: InputProps = {
+                onClick: jest.fn()
+            }
+            render(<FilePicker
+                onFileChange={jest.fn()}
+                placeholder="the best placeholder"
+                clearButtonLabel="the best label"
+                accept="application/jason"
+                inputProps={inputProps}
+            />)
+            const element = screen.getByPlaceholderText(/^the best placeholder$/i)
+
+            userEvent.click(element)
+
+            expect(inputProps.onClick).not.toHaveBeenCalled()
+        })
+    })
+
     describe("Single file", () => {
         it("accepts a file", () => {
             const onFileChangeMock = jest.fn()
-            render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder"/>)
+            render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" />)
 
             // No other way since the normal input will not accept a file change
             userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
@@ -78,7 +176,7 @@ describe("File picker", () => {
 
         it("clears the selected file and allows to pick again", () => {
             const onFileChangeMock = jest.fn()
-            render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder"/>)
+            render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" />)
 
             // No other way since the normal input will not accept a file change
             userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
@@ -116,7 +214,7 @@ describe("File picker", () => {
 
         it("clears the selected file and allows to pick again", () => {
             const onFileChangeMock = jest.fn()
-            render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" multipleFiles={true}/>)
+            render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" multipleFiles={true} />)
 
             // No other way since the normal input will not accept a file change
             userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
@@ -141,7 +239,7 @@ describe("File picker", () => {
 
         const Component: React.VFC<{
             onFileChange: (fileList: Array<File>) => void
-        }> = ({onFileChange}) => {
+        }> = ({ onFileChange }) => {
             const ref = useRef<FilePicker>(null);
             return <>
                 <Button onClick={() => ref?.current?.reset()}>Trigger reset</Button>
@@ -153,7 +251,7 @@ describe("File picker", () => {
                 />
             </>
         }
-        render(<Component onFileChange={onFileChangeMock}/>)
+        render(<Component onFileChange={onFileChangeMock} />)
 
         userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
         expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
