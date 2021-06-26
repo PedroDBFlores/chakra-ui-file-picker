@@ -1,4 +1,4 @@
-[![Components test](https://github.com/PedroDBFlores/chakra-ui-file-picker/actions/workflows/components-test.yml/badge.svg)](https://github.com/PedroDBFlores/chakra-ui-file-picker/actions/workflows/components-test.yml)
+[![Components test](https://github.com/PedroDBFlores/chakra-ui-file-picker/actions/workflows/components.yml/badge.svg)](https://github.com/PedroDBFlores/chakra-ui-file-picker/actions/workflows/components-test.yml)
 
 # Chakra UI File Picker
 
