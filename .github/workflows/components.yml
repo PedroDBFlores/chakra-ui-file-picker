@@ -24,29 +24,29 @@ jobs:
       - run: npm ci
       - run: npm test
 
-  publish:
-    name: "Publish to NPM"
-    runs-on: ubuntu-latest
-    needs: test
+#   publish:
+#     name: "Publish to NPM"
+#     runs-on: ubuntu-latest
+#     needs: test
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
 
-      - name: Check version changes
-        uses: EndBug/version-check@v2
-        id: check
+#       - name: Check version changes
+#         uses: EndBug/version-check@v2
+#         id: check
 
-      - name: Version update detected
-        if: steps.check.outputs.changed == 'true'
-        run: 'echo "Version change! -> ${{ steps.check.outputs.type }}"'
+#       - name: Version update detected
+#         if: steps.check.outputs.changed == 'true'
+#         run: 'echo "Version change! -> ${{ steps.check.outputs.type }}"'
 
-      - name: Set up Node.js for NPM
-        if: steps.check.outputs.changed == 'true'
-        uses: actions/setup-node@v2
-        with:
-          registry-url: "https://registry.npmjs.org"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm ci
-      - run: npm publish
+#       - name: Set up Node.js for NPM
+#         if: steps.check.outputs.changed == 'true'
+#         uses: actions/setup-node@v2
+#         with:
+#           registry-url: "https://registry.npmjs.org"
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+#       - run: npm ci
+#       - run: npm publish
