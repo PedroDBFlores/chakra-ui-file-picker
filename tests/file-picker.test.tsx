@@ -66,7 +66,7 @@ describe("File picker", () => {
 
     it("allows standard Chakra-UI props to the Input", () => {
         const inputProps: InputProps = {
-            ['aria-autocomplete']: "none"
+            ["aria-autocomplete"]: "none"
         }
         render(<FilePicker
             onFileChange={jest.fn()}
@@ -81,7 +81,7 @@ describe("File picker", () => {
 
     it("allows standard Chakra-UI props to the InputGroup", () => {
         const inputGroupProps: InputGroupProps = {
-            ['aria-autocomplete']: "none"
+            ["aria-autocomplete"]: "none"
         }
 
         render(<FilePicker
@@ -92,7 +92,9 @@ describe("File picker", () => {
             inputGroupProps={inputGroupProps}
         />)
 
-        expect(screen.getByPlaceholderText(/^the best placeholder$/i).parentElement).toHaveAttribute("aria-autocomplete", "none")
+        const element = screen.getByPlaceholderText(/^the best placeholder$/i)
+        // eslint-disable-next-line testing-library/no-node-access
+        expect(element.closest("div")).toHaveAttribute("aria-autocomplete", "none")
     })
 
     describe("Prop spreading", () => {
@@ -140,9 +142,9 @@ describe("File picker", () => {
                 inputProps={inputProps}
             />)
 
-            expect(screen.getByPlaceholderText(/^the best placeholder$/i)).toHaveAttribute("value", "")
+            expect(screen.getByPlaceholderText(/^the best placeholder$/i)).toHaveValue("")
         })
-        
+
         it("disallows changing the Input's onClick handler", () => {
             const inputProps: InputProps = {
                 onClick: jest.fn()
@@ -240,7 +242,7 @@ describe("File picker", () => {
         const Component: React.VFC<{
             onFileChange: (fileList: Array<File>) => void
         }> = ({ onFileChange }) => {
-            const ref = useRef<FilePicker>(null);
+            const ref = useRef<FilePicker>(null)
             return <>
                 <Button onClick={() => ref?.current?.reset()}>Trigger reset</Button>
                 <FilePicker
