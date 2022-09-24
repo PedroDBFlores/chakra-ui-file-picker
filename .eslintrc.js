@@ -45,7 +45,7 @@ module.exports = {
             "files": ["*.test.tsx", "*.test.ts", "tests/**"],
             "rules": {
                 "testing-library/prefer-find-by": "error",
-                "testing-library/no-debug": "error",
+                "testing-library/no-debugging-utils": "error",
                 "react/display-name": "off",
                 "no-restricted-globals": ["error", "console"],
                 "react/prop-types": "off",

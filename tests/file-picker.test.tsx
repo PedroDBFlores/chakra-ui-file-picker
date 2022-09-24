@@ -165,33 +165,33 @@ describe("File picker", () => {
     })
 
     describe("Single file", () => {
-        it("accepts a file", () => {
+        it("accepts a file", async () => {
             const onFileChangeMock = jest.fn()
             render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" />)
 
             // No other way since the normal input will not accept a file change
-            userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
+            await userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
 
             expect(onFileChangeMock).toHaveBeenLastCalledWith([jpgFile])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name}`)
         })
 
-        it("clears the selected file and allows to pick again", () => {
+        it("clears the selected file and allows to pick again", async () => {
             const onFileChangeMock = jest.fn()
             render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" />)
 
             // No other way since the normal input will not accept a file change
-            userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
+            await userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
 
             expect(onFileChangeMock).toHaveBeenNthCalledWith(1, [jpgFile])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name}`)
 
-            userEvent.click(screen.getByText(/^clear$/i))
+            await userEvent.click(screen.getByText(/^clear$/i))
 
             expect(onFileChangeMock).toHaveBeenNthCalledWith(2, [])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")
 
-            userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
+            await userEvent.upload(screen.getByTestId(/^holder$/i), jpgFile)
 
             expect(onFileChangeMock).toHaveBeenNthCalledWith(3, [jpgFile])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name}`)
@@ -199,7 +199,7 @@ describe("File picker", () => {
     })
 
     describe("Multiple files", () => {
-        it("accepts multiple files", () => {
+        it("accepts multiple files", async () => {
             const onFileChangeMock = jest.fn()
             render(<FilePicker
                 onFileChange={onFileChangeMock}
@@ -208,38 +208,38 @@ describe("File picker", () => {
             />)
 
             // No other way since the normal input will not accept a file change
-            userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
+            await userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
 
             expect(onFileChangeMock).toHaveBeenLastCalledWith([jpgFile, txtFile])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
         })
 
-        it("clears the selected file and allows to pick again", () => {
+        it("clears the selected file and allows to pick again", async () => {
             const onFileChangeMock = jest.fn()
             render(<FilePicker onFileChange={onFileChangeMock} placeholder="holder" multipleFiles={true} />)
 
             // No other way since the normal input will not accept a file change
-            userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
+            await userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
 
             expect(onFileChangeMock).toHaveBeenNthCalledWith(1, [jpgFile, txtFile])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
 
-            userEvent.click(screen.getByText(/^clear$/i))
+            await userEvent.click(screen.getByText(/^clear$/i))
 
             expect(onFileChangeMock).toHaveBeenNthCalledWith(2, [])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")
 
-            userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
+            await userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
 
             expect(onFileChangeMock).toHaveBeenNthCalledWith(3, [jpgFile, txtFile])
             expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
         })
     })
 
-    it("resets the file picker", () => {
+    it("resets the file picker", async () => {
         const onFileChangeMock = jest.fn()
 
-        const Component: React.VFC<{
+        const Component: React.FC<{
             onFileChange: (fileList: Array<File>) => void
         }> = ({ onFileChange }) => {
             const ref = useRef<FilePicker>(null)
@@ -255,10 +255,10 @@ describe("File picker", () => {
         }
         render(<Component onFileChange={onFileChangeMock} />)
 
-        userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
+        await userEvent.upload(screen.getByTestId(/^holder$/i), [jpgFile, txtFile])
         expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue(`${jpgFile.name} & ${txtFile.name}`)
 
-        userEvent.click(screen.getByText(/trigger reset/i))
+        await userEvent.click(screen.getByText(/trigger reset/i))
 
         expect(onFileChangeMock).toHaveBeenLastCalledWith([])
         expect(screen.getByPlaceholderText(/^holder$/i)).toHaveValue("")

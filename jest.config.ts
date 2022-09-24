@@ -1,6 +1,6 @@
 import path from "path"
 import type {Config} from "@jest/types"
-import { defaults as tsjPreset } from 'ts-jest/presets'
+import { defaults as tsjPreset } from "ts-jest/presets"
 
 const jestConfig: Config.InitialOptions = {
     transform: {

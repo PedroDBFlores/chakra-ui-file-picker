@@ -1,17 +1,18 @@
 import { Input, InputGroup, InputGroupProps } from "@chakra-ui/input"
-import { Button, InputRightAddon } from "@chakra-ui/react"
+import { Button, ButtonProps, InputRightAddon } from "@chakra-ui/react"
 import React from "react"
 import PropTypes from "prop-types"
 
 interface FilePickerProps {
     onFileChange: (fileList: Array<File>) => void
     placeholder: string
-    clearButtonLabel?: string | undefined
-    hideClearButton?: boolean | undefined
-    multipleFiles?: boolean | undefined
-    accept?: string | undefined
-    inputProps?: InputGroupProps | undefined
-    inputGroupProps?: InputGroupProps | undefined
+    clearButtonLabel?: string
+    hideClearButton?: boolean
+    multipleFiles?: boolean
+    accept?: string
+    inputProps?: InputGroupProps
+    inputGroupProps?: InputGroupProps
+    buttonProps?: ButtonProps
 }
 
 interface FilePickerState {
@@ -26,10 +27,11 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
         accept: undefined,
         hideClearButton: false,
         inputProps: undefined,
-        inputGroupProps: undefined
+        inputGroupProps: undefined,
+        buttonProps: undefined
     }
 
-    private inputRef = React.createRef<HTMLInputElement>();
+    private inputRef = React.createRef<HTMLInputElement>()
 
     constructor(props: FilePickerProps) {
         super(props)
@@ -67,7 +69,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
 
     private clearInnerInput() {
         if (this.inputRef?.current) {
-            this.inputRef.current.files = null
+            this.inputRef.current.value = ""
         }
     }
 
@@ -108,7 +110,7 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
                         readOnly: true,
                         isReadOnly: true,
                         value: this.state.fileName,
-                        onClick: this.handleOnInputClick
+                        onClick: this.handleOnInputClick,
                     }
                     }
                 />
@@ -123,22 +125,24 @@ class FilePicker extends React.Component<FilePickerProps, FilePickerState> {
     }
 }
 
-type ClearButtonProps = Pick<FilePickerProps, "clearButtonLabel"> & {
+type ClearButtonProps = Pick<FilePickerProps, "clearButtonLabel" | "buttonProps"> & {
     onButtonClick: () => void
 }
 
-const ClearButton: React.VFC<ClearButtonProps> = ({
+const ClearButton: React.FC<ClearButtonProps> = ({
     clearButtonLabel,
-    onButtonClick
+    onButtonClick,
+    buttonProps
 }) => (
     <InputRightAddon>
-        <Button onClick={onButtonClick}>{clearButtonLabel ?? "Clear"}</Button>
+        <Button {...buttonProps} onClick={onButtonClick}>{clearButtonLabel ?? "Clear"}</Button>
     </InputRightAddon>
 )
 
 ClearButton.propTypes = {
     clearButtonLabel: PropTypes.string,
-    onButtonClick: PropTypes.func.isRequired
+    onButtonClick: PropTypes.func.isRequired,
+    buttonProps: PropTypes.object,
 }
 
 
